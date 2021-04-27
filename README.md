@@ -29,4 +29,4 @@ gallerySnapHelperIndicator.attachToRecyclerView(mRcvIndicator);<br>
 如果需要进行Scale缩放，RecyclerView需要将高度设置为scale之后的高度，否则RecyclerView的高度会出现错乱<br>
 如果不需要Scale缩放，RecyclerView的高度可设置为wrap_content<br>
 
-#
+##
