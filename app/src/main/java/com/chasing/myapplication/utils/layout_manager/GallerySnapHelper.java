@@ -1,7 +1,6 @@
 package com.chasing.myapplication.utils.layout_manager;
 
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Scroller;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GallerySnapHelper extends RecyclerView.OnFlingListener {
 
     RecyclerView mRecyclerView;
+    GalleryLayoutManager mLayoutManager;
     int mPointDownPosition;
-    Scroller mGravityScroller;
 
     private boolean snapToCenter = false;
 
@@ -58,13 +57,12 @@ public class GallerySnapHelper extends RecyclerView.OnFlingListener {
     public boolean onFling(int velocityX, int velocityY) {
         if (mRecyclerView.getChildCount() == 0) return false;
         int width = mRecyclerView.getChildAt(0).getWidth();
+        // 判断fling的距离大于一页，则直接控制Rcv滚动一页
         if (velocityX > width) {
-            velocityX = width;
-            mRecyclerView.fling(velocityX, 0);
+            mLayoutManager.smoothScrollToPosition(mRecyclerView, null, mLayoutManager.getCurrentPosition() + 1);
             return true;
         } else if (velocityX < -width) {
-            velocityX = -width;
-            mRecyclerView.fling(velocityX, 0);
+            mLayoutManager.smoothScrollToPosition(mRecyclerView, null, mLayoutManager.getCurrentPosition() - 1);
             return true;
         }
         return false;
@@ -83,6 +81,7 @@ public class GallerySnapHelper extends RecyclerView.OnFlingListener {
             final RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
             if (!(layoutManager instanceof GalleryLayoutManager)) return;
 
+            mLayoutManager = (GalleryLayoutManager) layoutManager;
             setupCallbacks();
         }
     }
@@ -91,7 +90,7 @@ public class GallerySnapHelper extends RecyclerView.OnFlingListener {
         final int delta = layoutManager.getOffsetToCenter();
         if (delta != 0) {
             snapToCenter = true;
-            mRecyclerView.smoothScrollBy(delta, 0);
+            mRecyclerView.smoothScrollBy(delta, 0, new DecelerateInterpolator());
         } else {
             // set it false to make smoothScrollToPosition keep trigger the listener
             snapToCenter = false;
@@ -114,8 +113,6 @@ public class GallerySnapHelper extends RecyclerView.OnFlingListener {
         }
         mRecyclerView.setOnFlingListener(this);
         mRecyclerView.addOnScrollListener(mScrollListener);
-        mGravityScroller = new Scroller(mRecyclerView.getContext(),
-                new DecelerateInterpolator());
     }
 
     /**
