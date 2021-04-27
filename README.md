@@ -1,4 +1,4 @@
-# GalleryLayoutManager使RecyclerView支持类似Gallery的功能
+﻿# GalleryLayoutManager使RecyclerView支持类似Gallery的功能
 
 ![Image text](https://github.com/ChasingWord/GalleryLayoutManager/blob/main/screen_shot/1.jpg)
 
@@ -28,3 +28,5 @@ gallerySnapHelperIndicator.attachToRecyclerView(mRcvIndicator);<br>
 #### 待修复：<br>
 如果需要进行Scale缩放，RecyclerView需要将高度设置为scale之后的高度，否则RecyclerView的高度会出现错乱<br>
 如果不需要Scale缩放，RecyclerView的高度可设置为wrap_content<br>
+
+#
